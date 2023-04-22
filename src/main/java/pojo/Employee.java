@@ -23,6 +23,9 @@ public class Employee {
 
     }
 
+    public Employee(int id, String ivan, String fedorov, String m, int age, String omsk) {
+    }
+
     public City getCity() {
         return city;
     }

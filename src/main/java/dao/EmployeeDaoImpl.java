@@ -12,7 +12,6 @@ import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDAO{
     private Connection connection;
-
     public EmployeeDaoImpl(Connection connection) {
         this.connection = connection;
     }
