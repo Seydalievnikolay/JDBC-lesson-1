@@ -24,7 +24,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
             statement.setString(2, employee.getLastName());
             statement.setString(3, employee.getGender());
             statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getCity().getCityId());
+            statement.setInt(5, employee.getCity());
             statement.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
                 employee.setLastName(resultSet.getString("last_name"));
                 employee.setGender(resultSet.getString("gender"));
                 employee.setAge(resultSet.getInt(6));
-                employee.setCity(new City((resultSet.getInt("city_id")), resultSet.getString("city_name")));
+                employee.setCity(new City(4,"Omsk").getCityId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
                 String gender = resultSet.getString("gender");
                 int age = resultSet.getInt("age");
                 City city = new City(resultSet.getInt("city_id"), resultSet.getString("city_name"));
-                employees.add((new Employee(id, firstName, lastName, gender, age, city)));
+                employees.add((new Employee(id, firstName, lastName, gender, age, city.getCityId())));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class EmployeeDaoImpl implements EmployeeDAO{
             statement.setString(2, employee.getLastName());
             statement.setString(3, employee.getGender());
             statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getCity().getCityId());
+            statement.setInt(5, employee.getCity());
             statement.setInt(6, id);
             statement.executeUpdate();
         } catch (SQLException e) {

@@ -37,7 +37,7 @@ public class Application {
             e.printStackTrace();
         }
         EmployeeDAO employeeDao = new EmployeeDaoImpl(connection);
-        Employee employee1 = new Employee(7, "Ivan", "Fedorov", "M", 34,"Omsk" );
+        Employee employee1 = new Employee(7, "Ivan", "Fedorov", "M", 34, 4 );
         employeeDao.create(employee1);
         List<Employee> employees = new ArrayList<>(employeeDao.getAllEmployees());
         for(Employee employee:employees){
