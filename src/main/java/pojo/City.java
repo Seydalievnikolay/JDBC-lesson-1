@@ -5,7 +5,6 @@ import java.util.Objects;
 public class City {
     int cityId;
     String cityName;
-
     public City(int cityId, String cityName) {
         this.cityId = cityId;
         this.cityName = cityName;
@@ -47,4 +46,5 @@ public class City {
     public int hashCode() {
         return Objects.hash(cityId, cityName);
     }
+
 }
