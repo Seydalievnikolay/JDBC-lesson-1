@@ -1,110 +1,78 @@
 package dao;
 
-import pojo.City;
 import pojo.Employee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDAO{
-    private Connection connection;
-    public EmployeeDaoImpl(Connection connection) {
-        this.connection = connection;
-    }
+
 
     @Override
     public void create(Employee employee) {
-        try (PreparedStatement statement = connection.prepareStatement
-                ("INSERT INTO employee (first_name,last_name, gender , age,city_id) VALUES ((?), (?), (?), (?),(?))")) {
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setString(3, employee.getGender());
-            statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getCity());
-            statement.executeUpdate();
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Employee employee1 = entityManager.find(Employee.class, employee.getId());
+        entityManager.persist(employee1);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
     }
 
     @Override
     public Employee getById(int id) {
-        Employee employee = new Employee();
-
-        try (PreparedStatement statement = connection.prepareStatement
-                ("SELECT * FROM employee INNER JOIN city ON employee.city_id = city.city_id WHERE id=(?)")){
-            statement.setInt(1,id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
-                employee.setId(resultSet.getInt(1));
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setGender(resultSet.getString("gender"));
-                employee.setAge(resultSet.getInt(6));
-                employee.setCity(new City(4,"Omsk").getCityId());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Employee employee = entityManager.find(Employee.class, id);
+        entityManager.detach(employee);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
         return employee;
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        List <Employee> employees = new ArrayList<>();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("SELECT e FROM Employee e ", Employee.class).getResultList();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
 
-        try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM employee LEFT JOIN city ON employee.city_id=city.city_id")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("first_name");
-                String lastName = resultSet.getString("last_name");
-                String gender = resultSet.getString("gender");
-                int age = resultSet.getInt("age");
-                City city = new City(resultSet.getInt("city_id"), resultSet.getString("city_name"));
-                employees.add((new Employee(id, firstName, lastName, gender, age, city.getCityId())));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return employees;
+        return null;
     }
 
-    @Override
-    public void updateById(int id,Employee employee) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "UPDATE employee SET first_name = (?), last_name = (?), gender = (?), age = (?), city_id = (?) WHERE id=(?)")) {
 
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setString(3, employee.getGender());
-            statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getCity());
-            statement.setInt(6, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void updateById(Employee employee) {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(employee);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
 
     }
 
 
     @Override
-    public void deleteById(int id) {
-        try (PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM employee WHERE id=(?)")) {
-
-            statement.setInt(1, id);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void deleteById(Employee employee) {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.remove(entityManager.find(Employee.class, employee.getId()));
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        entityManagerFactory.close();
+        System.out.println( "Сотрудник № " +employee.getId()+ "удалён.");
 
     }
 }
