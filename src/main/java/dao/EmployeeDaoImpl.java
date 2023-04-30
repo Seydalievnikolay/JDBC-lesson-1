@@ -4,6 +4,7 @@ import pojo.Employee;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
@@ -14,10 +15,10 @@ public class EmployeeDaoImpl implements EmployeeDAO{
     public void create(Employee employee) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        Employee employee1 = entityManager.find(Employee.class, employee.getId());
-        entityManager.persist(employee1);
-        entityManager.getTransaction().commit();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.persist(employee);
+        transaction.commit();
         entityManager.close();
         entityManagerFactory.close();
 
@@ -49,22 +50,21 @@ public class EmployeeDaoImpl implements EmployeeDAO{
         return null;
     }
 
-
     @Override
-    public void updateById(Employee employee) {
+    public void updateByEmployee(Employee employee,int id) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
+        employee.setId(id);
         entityManager.merge(employee);
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();
-
     }
 
 
     @Override
-    public void deleteById(Employee employee) {
+    public void deleteByEmployee(Employee employee) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
