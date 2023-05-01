@@ -5,7 +5,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
-
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,14 +13,13 @@ public class Employee {
     private String firstName;
     @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
-    @Column(name = "gender", length = 6, nullable = false)
     private String gender;
-    @Column(name = "age")
     private int age;
-    @Column(name = "city_id")
-    private int cityId;
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "city_id")
+    private City cityId;
 
-    public Employee(int id, String firstName, String lastName, String gender, int age, int cityId) {
+    public Employee(int id, String firstName, String lastName, String gender, int age, City cityId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,7 +33,7 @@ public class Employee {
     }
 
     public int getCity() {
-        return cityId;
+        return cityId.getCity_id();
     }
 
     public void setCity(int city) {
@@ -43,10 +41,10 @@ public class Employee {
     }
 
     public int getCityId() {
-        return cityId;
+        return cityId.getCity_id();
     }
 
-    public void setCityId(int cityId) {
+    public void setCityId(City cityId) {
         this.cityId = cityId;
     }
 

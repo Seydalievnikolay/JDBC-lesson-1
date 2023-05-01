@@ -1,14 +1,14 @@
+import dao.CityDao;
+import dao.CityDaoImpl;
 import dao.EmployeeDAO;
 import dao.EmployeeDaoImpl;
+import pojo.City;
 import pojo.Employee;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import static pojo.EntityManager.createEntityManager;
+import java.util.List;
 
 public class Application {
     public static Connection getConnection() throws SQLException {
@@ -18,17 +18,21 @@ public class Application {
         return DriverManager.getConnection(url, user, password);
     }
 
+
+
     public static void main(String[] args) {
-        EntityManager entityManager = createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
+        CityDao cityDao = new CityDaoImpl();
         EmployeeDAO employeeDAO = new EmployeeDaoImpl();
-        Employee employee = new Employee(8, "Stepan", "Stepanov", "M", 45, 3);
-        employeeDAO.create(employee);
+        City city = new City(8,"Rio_de_Janeiro");
+        cityDao.create(city);
+        Employee employee = new Employee(9,"Sergey", "Sergeev", "M", 30, city);
 
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        Employee employee2 = new Employee(10,"Anna", "Sergeeva", "W", 22, city);
 
+        city.setEmployees(List.of(employee,employee2));
+        City updateCity  = cityDao.updateCity(city);
+        System.out.println("Сотрудники добавлены " + employeeDAO.getAllEmployees().contains(updateCity.getEmployees()));
+        cityDao.getById(updateCity.getCity_id());
 
 
     }
