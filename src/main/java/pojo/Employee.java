@@ -16,36 +16,29 @@ public class Employee {
     private String gender;
     private int age;
     @ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "city_id")
-    private City cityId;
+    @JoinColumn (name = "city_id")
+    private City city;
 
-    public Employee(int id, String firstName, String lastName, String gender, int age, City cityId) {
+    public Employee(int id, String firstName, String lastName, String gender, int age, City cityId, City city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.cityId = cityId;
+        this.city = city;
+        this.city = city;
     }
 
     public Employee() {
 
     }
 
-    public int getCity() {
-        return cityId.getCity_id();
+    public City getCity() {
+        return city;
     }
 
-    public void setCity(int city) {
-        this.cityId = cityId;
-    }
-
-    public int getCityId() {
-        return cityId.getCity_id();
-    }
-
-    public void setCityId(City cityId) {
-        this.cityId = cityId;
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public int getId() {
@@ -96,7 +89,7 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
-                ", city=" + cityId +
+                ", city=" + city +
                 '}';
     }
 
@@ -105,11 +98,11 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && age == employee.age && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(gender, employee.gender) && Objects.equals(cityId, employee.cityId);
+        return id == employee.id && age == employee.age && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(gender, employee.gender) && Objects.equals(city, employee.city);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, gender, age, cityId);
+        return Objects.hash(id, firstName, lastName, gender, age, city);
     }
 }
