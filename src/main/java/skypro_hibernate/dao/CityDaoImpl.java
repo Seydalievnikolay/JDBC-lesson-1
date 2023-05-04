@@ -1,6 +1,6 @@
-package dao;
+package skypro_hibernate.dao;
 
-import pojo.Employee;
+import skypro_hibernate.pojo.City;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,63 +8,60 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class EmployeeDaoImpl implements EmployeeDAO{
-
+public class CityDaoImpl implements CityDao {
 
     @Override
-    public Employee create(Employee employee) {
+    public City create(City city) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.persist(employee);
+        entityManager.persist(city);
         transaction.commit();
-        return  employee;
-
+        return  city;
     }
 
     @Override
-    public Employee getById(int id) {
+    public City getById(int id) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        Employee employee = entityManager.find(Employee.class, id);
-        entityManager.detach(employee);
+        City city = entityManager.find(City.class, id);
+        entityManager.detach(city);
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();
-        return employee;
+        return city;
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
+    public List<City> getAllCity() {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
-        return entityManager.createQuery("FROM Employee ").getResultList();
+        return entityManager.createQuery("FROM City ").getResultList();
     }
 
     @Override
-    public Employee updateByEmployee(Employee employee, int id) {
+    public City updateCity(City city) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        employee.setId(id);
-        entityManager.merge(employee);
+        city.setCity_id();
+        entityManager.merge(city);
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();
-        return employee;
+        return city;
     }
 
-
     @Override
-    public void deleteByEmployee(Employee employee) {
+    public void deleteCity(City city) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        entityManager.remove(entityManager.find(Employee.class, employee.getId()));
+        entityManager.remove(entityManager.find(City.class, city.getCity_id()));
         entityManager.getTransaction().commit();
         entityManager.close();
         entityManagerFactory.close();

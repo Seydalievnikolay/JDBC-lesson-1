@@ -1,6 +1,6 @@
-package dao;
+package skypro_hibernate.dao;
 
-import pojo.Employee;
+import skypro_hibernate.pojo.Employee;
 
 import java.util.List;
 

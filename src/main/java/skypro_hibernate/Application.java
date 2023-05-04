@@ -1,6 +1,7 @@
-import dao.*;
-import pojo.City;
-import pojo.Employee;
+package skypro_hibernate;
+
+import skypro_hibernate.dao.*;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;

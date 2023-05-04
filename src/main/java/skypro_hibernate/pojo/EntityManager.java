@@ -1,4 +1,4 @@
-package pojo;
+package skypro_hibernate.pojo;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

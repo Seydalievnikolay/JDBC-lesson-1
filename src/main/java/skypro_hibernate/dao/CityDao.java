@@ -1,6 +1,6 @@
-package dao;
+package skypro_hibernate.dao;
 
-import pojo.City;
+import skypro_hibernate.pojo.City;
 
 import java.util.List;
 
